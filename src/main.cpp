@@ -68,7 +68,6 @@ void loop() {
     } else {
       // if the current state is LOW then the button
       // wend from on to off:
-      curScreen += 1;
       tone(BUZZER_PIN, 1567, 50); // Plays sound when pressed
 
   delay(100);
@@ -85,7 +84,6 @@ void loop() {
   curTime = millis();
   if(curTime - lastScreenChanged > delayTime)
   {
-    Serial.println(lastScreenChanged);
     char(content)[8];
     curScreen += 1;
     if(curScreen >= 5) { curScreen = 0; }
@@ -97,7 +95,7 @@ void loop() {
         // Read temperature as Fahrenheit
         float t = dht.readTemperature(true);
         char(title)[12] = "Temp";
-        sprintf(content, "%.0f", t);
+        sprintf(content, "%.2f F", t);
         TwolineDisplay(display_ptr, &title, &content);
         break;
       }
@@ -105,8 +103,8 @@ void loop() {
       case 1:
       {
         float h = dht.readHumidity();
-        char(title)[12] = "Hum:";
-        sprintf(content, "%.0f", h);
+        char(title)[12] = "Hum";
+        sprintf(content, "%.2f %%", h);
         TwolineDisplay(display_ptr, &title, &content);
         break;
       }
@@ -114,8 +112,8 @@ void loop() {
       case 2:
       {
         float pm2_5 = 50;
-        char(title)[12] = "PM2.5:";
-        sprintf(content, "%.0f", pm2_5);
+        char(title)[12] = "PM2.5 ug/L";
+        sprintf(content, "%.1f", pm2_5);
         TwolineDisplay(display_ptr, &title, &content);
         break;
       }
@@ -123,7 +121,7 @@ void loop() {
       case 3:
       {
         float pm10 = 50;
-        char(title)[12] = "PM10:";
+        char(title)[12] = "PM10";
         sprintf(content, "%.0f", pm10);
         TwolineDisplay(display_ptr, &title, &content);
         break;
@@ -132,7 +130,7 @@ void loop() {
       case 4:
       {
         float aqi = 30;
-        char(title)[12] = "AQI:";
+        char(title)[12] = "AQI";
         sprintf(content, "%.0f", aqi);
         TwolineDisplay(display_ptr, &title, &content);
         break;
@@ -164,6 +162,7 @@ void TwolineDisplay(Adafruit_SSD1306 * d, char(*title)[12], char(*content)[8])
 
   d->setTextSize(1);
   d->println();
+
 
   d->setTextSize(3);
   d->println(*content);
